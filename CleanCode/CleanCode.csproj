@@ -42,8 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Duplication\ImageEditor.cs" />
-    <Compile Include="Duplication\ImageEditor_Copy.cs" />
-    <Compile Include="Nommage\MineSweeperGame_Copy.cs" />
     <Compile Include="Nommage\MineSweeperGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
