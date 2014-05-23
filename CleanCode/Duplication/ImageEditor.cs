@@ -18,26 +18,50 @@ namespace CleanCode.Duplication
 
         public void ScaleToOneDimension(float desiredDimension)
         {
-            if (Math.Abs(desiredDimension - _image.Width) < 0.01f)
+            if (isTooCloseToImageWidth(desiredDimension))
                 return;
 
+            float scalingFactor = CalculateScalingFactor(desiredDimension);
+
+            Image scaledImage = ScaleImage(scalingFactor);
+
+            ReplaceImage(scaledImage);
+        }
+
+        private System.Drawing.Image ScaleImage(float scalingFactor)
+        {
+            return ImageUtilities.GetScaledImage(_image, scalingFactor);
+        }
+
+        private float CalculateScalingFactor(float desiredDimension)
+        {
             float scalingFactor = desiredDimension / _image.Width;
-            scalingFactor = (float)(Math.Floor(scalingFactor * 100) * 0.01f);
+            scalingFactor = TruncateTo2Digits(scalingFactor);
+            return scalingFactor;
+        }
 
-            Image scaledImage = ImageUtilities.GetScaledImage(_image, scalingFactor);
+        private static float TruncateTo2Digits(float number)
+        {
+            return (float)(Math.Floor(number * 100) * 0.01f);
+        }
 
+        private bool isTooCloseToImageWidth(float desiredDimension)
+        {
+            return Math.Abs(desiredDimension - _image.Width) < 0.01f;
+        }
+
+        private void ReplaceImage(Image transformedImage)
+        {
             _image.Dispose();
             GC.Collect();
-            _image = scaledImage;
+            _image = transformedImage;
         }
 
         public void Rotate(int degrees)
         {
             Image rotatedImage = ImageUtilities.GetRotatedImage(_image, degrees);
 
-            _image.Dispose();
-            GC.Collect();
-            _image = rotatedImage;
+            ReplaceImage(rotatedImage);
         }
 
         public Image Image

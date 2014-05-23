@@ -22,7 +22,7 @@ namespace CleanCode.Tests
         [Test]
         public void ShouldGetNoFlaggedCell()
         {
-            var flaggedCells = _mineSweeper.GetFgdCells();
+            var flaggedCells = _mineSweeper.GetFlaggedCells();
 
             Assert.That(flaggedCells, Is.Empty);
         }
@@ -30,11 +30,11 @@ namespace CleanCode.Tests
         [Test]
         public void ShouldGetSomeFlaggedCells()
         {
-            _mineSweeper.Flg(1);
-            _mineSweeper.Flg(7);
-            _mineSweeper.Flg(9);
+            _mineSweeper.FlagCell(1);
+            _mineSweeper.FlagCell(7);
+            _mineSweeper.FlagCell(9);
 
-            var flaggedCells = _mineSweeper.GetFgdCells();
+            var flaggedCells = _mineSweeper.GetFlaggedCells();
 
             Assert.That(flaggedCells.Count, Is.EqualTo(3));
         }

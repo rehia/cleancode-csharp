@@ -5,25 +5,27 @@ namespace CleanCode.Nommage
 {
     public class MineSweeperGame
     {
-        private IList<int[]> theList;
+        private IList<int[]> gameBoard;
+        private static readonly int CellStatus = 0;
+        private static readonly int Flagged = 4;
 
-        public MineSweeperGame(IList<int[]> theList)
+        public MineSweeperGame(IList<int[]> gameBoard)
         {
-            this.theList = theList;
+            this.gameBoard = gameBoard;
         }
 
-        public IList<int[]> GetFgdCells()
+        public IList<int[]> GetFlaggedCells()
         {
-            IList<int[]> list1 = new List<int[]>();
-            foreach (int[] x in theList)
-                if (x[0] == 4)
-                    list1.Add(x);
-            return list1;
+            IList<int[]> flaggedCells = new List<int[]>();
+            foreach (int[] cell in gameBoard)
+                if (cell[CellStatus] == Flagged)
+                    flaggedCells.Add(cell);
+            return flaggedCells;
         }
 
-        public void Flg(int id)
+        public void FlagCell(int id)
         {
-            theList[id][0] = 4;
+            gameBoard[id][CellStatus] = Flagged;
         }
     }
 }
