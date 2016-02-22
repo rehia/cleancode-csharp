@@ -18,17 +18,33 @@ namespace CleanCode.Duplication
 
         public void ScaleToOneDimension(float desiredDimension)
         {
-            if (Math.Abs(desiredDimension - _image.Width) < 0.01f)
+            if (DesiredDimensionIsTooCloseToImageWidth(desiredDimension))
                 return;
 
-            float scalingFactor = desiredDimension / _image.Width;
-            scalingFactor = (float)(Math.Floor(scalingFactor * 100) * 0.01f);
+            float scalingFactor = CalculateScalingFactor(desiredDimension);
 
             Image scaledImage = ImageUtilities.GetScaledImage(_image, scalingFactor);
 
             _image.Dispose();
             GC.Collect();
             _image = scaledImage;
+        }
+
+        private float CalculateScalingFactor(float desiredDimension)
+        {
+            float scalingFactor = desiredDimension / _image.Width;
+            scalingFactor = TruncateNumberTo2Digits(scalingFactor);
+            return scalingFactor;
+        }
+
+        private static float TruncateNumberTo2Digits(float number)
+        {
+            return (float)(Math.Floor(number * 100) * 0.01f);
+        }
+
+        private bool DesiredDimensionIsTooCloseToImageWidth(float desiredDimension)
+        {
+            return Math.Abs(desiredDimension - _image.Width) < 0.01f;
         }
 
         public void Rotate(int degrees)
